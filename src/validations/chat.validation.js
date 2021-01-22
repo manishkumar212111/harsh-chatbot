@@ -3,8 +3,8 @@ const { password, objectId } = require('./custom.validation');
 
 const createChat = {
   body: Joi.object().keys({
-    bot: Joi.required(),
-    response: Joi.string().required(),
+    bot: Joi.string().required(),
+    response: Joi.object().required(),
     user_id: Joi.string().required(),
   }),
 };

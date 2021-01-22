@@ -9,7 +9,7 @@ const chat = mongoose.Schema(
       required: true,
     },
     response: {
-      type: String,
+      type: Object,
       required : true
     },
     user_id : {
