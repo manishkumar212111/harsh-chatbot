@@ -4,7 +4,7 @@ const { password, objectId } = require('./custom.validation');
 const createChatSchema = {
   body: Joi.object().keys({
     content: Joi.array().required(),
-    response: Joi.object(),
+    response: Joi.array(),
     _id: Joi.string().required(),
   }),
 };

@@ -26,7 +26,7 @@ const createChatSchema = async (chatBody) => {
  * @returns {Promise<QueryResult>}
  */
 const getChat = async (id) => {
-  const chats = await ChatSchema.findById(id);
+  const chats = id ? await ChatSchema.findById(id) : await ChatSchema.find();
   return chats;
 };
 

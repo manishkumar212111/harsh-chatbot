@@ -14,7 +14,7 @@ const chatSchema = mongoose.Schema(
       trim: true,
     },
     response: {
-      type: Object
+      type: Array
     },
   },
   {
