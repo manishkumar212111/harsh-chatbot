@@ -29,8 +29,8 @@ const getChat = async (id) => {
 
 const getChats = async (id) => {
   const chats = await Chat.find({user_id : id}).sort({'createdAt' : 1}).populate('bot' , {content : 1, user_response : 1 });
-  if(chats && chats.length){
-    chats.push(await ChatSchemaService.getChat(chats[chats.length -1].user_response._id));
+  if(chats && chats.length && chats[chats.length -1].user_response.id){
+    chats.push(await ChatSchemaService.getChat(chats[chats.length -1].user_response.id));
   }
   return chats;
 };
