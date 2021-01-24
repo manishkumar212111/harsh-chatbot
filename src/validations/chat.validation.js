@@ -4,11 +4,16 @@ const { password, objectId } = require('./custom.validation');
 const createChat = {
   body: Joi.object().keys({
     bot: Joi.string().required(),
-    response: Joi.object().required(),
+    user_response: Joi.object().required(),
     user_id: Joi.string().required(),
   }),
 };
 
+const getChats = {
+  query: Joi.object().keys({
+    userId : Joi.string(),
+  })
+};
 const getChat = {
   query: Joi.object().keys({
     ChatId: Joi.string(),
@@ -18,4 +23,5 @@ const getChat = {
 module.exports = {
   createChat,
   getChat,
+  getChats
 };

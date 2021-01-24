@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const  Chat  = require('../models/chat.model');
+const ChatSchemaService = require('../services/chatSchema.service')
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -26,8 +27,17 @@ const getChat = async (id) => {
   return chats;
 };
 
+const getChats = async (id) => {
+  const chats = await Chat.find({user_id : id}).sort({'createdAt' : 1}).populate('bot' , {content : 1, user_response : 1 });
+  if(chats && chats.length){
+    chats.push(await ChatSchemaService.getChat(chats[chats.length -1].user_response._id));
+  }
+  return chats;
+};
+
 
 module.exports = {
   createChat,
-  getChat
+  getChat,
+  getChats
 };

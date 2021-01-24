@@ -8,7 +8,7 @@ const chat = mongoose.Schema(
       ref: 'ChatSchema',
       required: true,
     },
-    response: {
+    user_response: {
       type: Object,
       required : true
     },
