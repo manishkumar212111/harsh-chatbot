@@ -15,6 +15,10 @@ const chat = mongoose.Schema(
     user_id : {
       type : String,
       required : true
+    },
+    client_id : {
+      type : String,
+      required : true
     }
   },
   {

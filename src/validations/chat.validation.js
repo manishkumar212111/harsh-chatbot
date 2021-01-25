@@ -6,6 +6,7 @@ const createChat = {
     bot: Joi.string().required(),
     user_response: Joi.object().required(),
     user_id: Joi.string().required(),
+    client_id : Joi.string().required()
   }),
 };
 
@@ -14,6 +15,13 @@ const getChats = {
     userId : Joi.string(),
   })
 };
+
+const getChatByClient = {
+  query: Joi.object().keys({
+    client_id : Joi.string().required(),
+  })
+};
+
 const getChat = {
   query: Joi.object().keys({
     ChatId: Joi.string(),
@@ -23,5 +31,6 @@ const getChat = {
 module.exports = {
   createChat,
   getChat,
-  getChats
+  getChats,
+  getChatByClient
 };

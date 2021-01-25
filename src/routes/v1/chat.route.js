@@ -7,6 +7,7 @@ const chatController = require('../../controllers/chat.controller');
 const router = express.Router();
 
 router.get('/', validate(chatValidation.getChats), chatController.getChats);
+router.get('/client', validate(chatValidation.getChatByClient), chatController.getChatByClient);
 
 router.post('/create', validate(chatValidation.createChat), chatController.createChat);
 

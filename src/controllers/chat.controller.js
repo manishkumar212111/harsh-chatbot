@@ -14,6 +14,12 @@ const getChat = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+
+const getChatByClient = catchAsync(async (req, res) => {
+  const result = await chatService.getChatByClient(req.query.client_id);
+  res.send(result);
+});
+
 const getChats = catchAsync(async (req, res) => {
   const result = await chatService.getChats(req.query.userId);
   res.send(result);
@@ -23,5 +29,6 @@ const getChats = catchAsync(async (req, res) => {
 module.exports = {
   createChat,
   getChat,
-  getChats
+  getChats,
+  getChatByClient
 };

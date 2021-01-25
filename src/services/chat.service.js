@@ -27,6 +27,13 @@ const getChat = async (id) => {
   return chats;
 };
 
+const getChatByClient = async (client_id) => {
+    console.log(client_id)
+    const chats = client_id ? await Chat.find({client_id : client_id}).populate('bot').exec() : await Chat.find().populate('bot').exec()   
+    return chats;
+
+};
+
 const getChats = async (id) => {
   const chats = await Chat.find({user_id : id}).sort({'createdAt' : 1}).populate('bot' , {content : 1, user_response : 1 });
   if(chats && chats.length && chats[chats.length -1].user_response.id){
@@ -39,5 +46,6 @@ const getChats = async (id) => {
 module.exports = {
   createChat,
   getChat,
-  getChats
+  getChats,
+  getChatByClient
 };
