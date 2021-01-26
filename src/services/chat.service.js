@@ -30,7 +30,15 @@ const getChat = async (id) => {
 const getChatByClient = async (client_id) => {
     console.log(client_id)
     const chats = client_id ? await Chat.find({client_id : client_id}).populate('bot').exec() : await Chat.find().populate('bot').exec()   
-    return chats;
+    
+    var chat = chats,
+    result = chats.reduce(function (r, a) {
+        r[a.user_id] = r[a.user_id] || [];
+        r[a.user_id].push(a);
+        return r;
+    }, Object.create(null));
+    
+    return result;
 
 };
 
