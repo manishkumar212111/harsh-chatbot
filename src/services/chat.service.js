@@ -81,16 +81,17 @@ const getChats = async (id) => {
     "createdAt": chats[0].createdAt,
     "id": chats[0].id
   }
-
+  let h = [];
   chats[0].response.forEach(element => {
     chatObj['bot'] = element.bot;
     chatObj['user_response'] = element.user_response;
+    h.push(chatObj)
   });
 
-  if(chatObj && chatObj.length && chatObj[chats.length -1].user_response.id){
-    chatObj.push(await ChatSchemaService.getChat(chatObj[chatObj.length -1].user_response.id));
+  if(h && h.length && h[h.length -1].user_response.id){
+    h.push(await ChatSchemaService.getChat(h[h.length -1].user_response.id));
   }
-  return chatObj;
+  return h;
 };
 
 
