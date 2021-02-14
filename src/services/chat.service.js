@@ -70,11 +70,27 @@ const getChatByClient = async (client_id , filters) => {
 };
 
 const getChats = async (id) => {
-  const chats = await Chat.find({user_id : id}).sort({'createdAt' : 1}).populate('bot' , {content : 1, user_response : 1 });
-  if(chats && chats.length && chats[chats.length -1].user_response.id){
-    chats.push(await ChatSchemaService.getChat(chats[chats.length -1].user_response.id));
+  let chats = await Chat.find({user_id : id}).sort({'createdAt' : 1});
+  if(!chats || !chats.length){
+    return [];
   }
-  return chats;
+  
+  let chatObj = {
+    "user_id": chats[0].user_id,
+    "client_id": chats[0].client_id,
+    "createdAt": chats[0].createdAt,
+    "id": chats[0].id
+  }
+
+  chats[0].response.forEach(element => {
+    chatObj['bot'] = element.bot;
+    chatObj['user_response'] = element.user_response;
+  });
+
+  if(chatObj && chatObj.length && chatObj[chats.length -1].user_response.id){
+    chatObj.push(await ChatSchemaService.getChat(chatObj[chatObj.length -1].user_response.id));
+  }
+  return chatObj;
 };
 
 
