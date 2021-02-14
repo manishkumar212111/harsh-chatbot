@@ -3,15 +3,6 @@ const { toJSON, paginate } = require('./plugins');
 
 const chat = mongoose.Schema(
   {
-    bot: {
-      type: String,
-      ref: 'ChatSchema',
-      required: true,
-    },
-    user_response: {
-      type: Object,
-      required : true
-    },
     user_id : {
       type : String,
       required : true
@@ -19,6 +10,10 @@ const chat = mongoose.Schema(
     client_id : {
       type : String,
       required : true
+    },
+    response : {
+      type : Array,
+      default : []
     }
   },
   {

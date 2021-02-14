@@ -16,7 +16,7 @@ const getChat = catchAsync(async (req, res) => {
 
 
 const getChatByClient = catchAsync(async (req, res) => {
-  const result = await chatService.getChatByClient(req.query.client_id);
+  const result = await chatService.getChatByClient(req.query.client_id , req.query);
   res.send(result);
 });
 

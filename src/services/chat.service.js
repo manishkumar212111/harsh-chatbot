@@ -1,5 +1,7 @@
 const httpStatus = require('http-status');
+const { options } = require('joi');
 const  Chat  = require('../models/chat.model');
+// const ChatSchemaService = require('../services/chatSchema.service')
 const ChatSchemaService = require('../services/chatSchema.service')
 const ApiError = require('../utils/ApiError');
 
@@ -9,8 +11,30 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Chat>}
  */
 const createChat = async (chatBody) => {
-  await Chat.create({...chatBody})
-  return chatBody;
+  
+  let findChat = await Chat.find({ user_id : chatBody.user_id });
+  if(findChat && findChat.length){
+    let response = findChat[0].response;
+    response.push({
+      "bot" : await ChatSchemaService.getChat(chatBody.bot),
+      "user_response" : chatBody.user_response
+    })
+    return await Chat.update( { user_id : chatBody.user_id} , { $set : { response : response } })
+
+  } else {
+    let chatObj = {
+      user_id : chatBody.user_id,
+      client_id : chatBody.client_id,
+      response : [
+        {
+          "bot" : await ChatSchemaService.getChat(chatBody.bot),
+          "user_response" : chatBody.user_response
+        }
+      ]
+    }
+    return await Chat.create({...chatObj})
+
+  }
 };
 
 /**
@@ -27,18 +51,19 @@ const getChat = async (id) => {
   return chats;
 };
 
-const getChatByClient = async (client_id) => {
-    console.log(client_id)
-    const chats = client_id ? await Chat.find({client_id : client_id}).populate('bot').exec() : await Chat.find().populate('bot').exec()   
-    
-    var chat = chats,
-    result = chats.reduce(function (r, a) {
-        r[a.user_id] = r[a.user_id] || [];
-        r[a.user_id].push(a);
-        return r;
-    }, Object.create(null));
-    
-    return result;
+const getChatByClient = async (client_id , filters) => {
+    let filter = {
+      client_id : client_id
+    };
+
+    let paginationOptions = {
+      page : filters.page ? filters.page : 1,
+      limit : filters.limit ? filters.limit : 10
+    }
+    return await Chat.paginate(filter, paginationOptions , async (option) => {
+      return await Chat.find(option.filter).
+      sort({createdAt : -1}).skip(option.skip).limit(option.limit).exec()
+    });    
 
 };
 

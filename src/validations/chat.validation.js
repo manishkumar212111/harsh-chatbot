@@ -19,6 +19,9 @@ const getChats = {
 const getChatByClient = {
   query: Joi.object().keys({
     client_id : Joi.string().required(),
+    page : Joi.string(),
+    limit : Joi.string()
+
   })
 };
 
