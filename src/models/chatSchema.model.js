@@ -8,6 +8,9 @@ const chatSchema = mongoose.Schema(
         unique : true,
         required : true
     },
+    questionTag : {
+      type : String,
+    },
     content: {
       type: Array,
       required: true,

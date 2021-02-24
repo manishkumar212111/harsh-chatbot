@@ -5,6 +5,7 @@ const createChatSchema = {
   body: Joi.object().keys({
     content: Joi.array().required(),
     response: Joi.array(),
+    questionTag : Joi.string(),
     _id: Joi.string().required(),
   }),
 };
