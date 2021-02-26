@@ -11,12 +11,27 @@ const morgan = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
+const path = require('path')
 
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 
 const app = express();
 
+app.set('views', path.join(__dirname, 'views'));
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+const chatService = require('./services/chat.service');
+
+app.get('/dashboard/:client_id' , async (req , res) => {
+  let lists = await chatService.getChatByClient(req.params.client_id , req.query);
+  if(lists && lists.results && lists.results.length == 0){
+    res.send("No data found");
+    return;
+  }
+  res.render("index.ejs" , { client_id : req.params.client_id , lists : lists});
+})
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
