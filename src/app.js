@@ -30,6 +30,10 @@ app.get('/dashboard/:client_id' , async (req , res) => {
     res.send("No data found");
     return;
   }
+  for( var i in lists.results){
+    lists.results[i].createdAt = new Date(lists.results[i].createdAt).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'});
+    console.log(lists.results[i].createdAt)
+  }
   res.render("index.ejs" , { client_id : req.params.client_id , lists : lists});
 })
 if (config.env !== 'test') {
