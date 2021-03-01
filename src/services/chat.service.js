@@ -18,7 +18,7 @@ const createChat = async (chatBody) => {
     response.push({
       "bot" : await ChatSchemaService.getChat(chatBody.bot),
       "user_response" : chatBody.user_response,
-      "createdAt" : new Date().toISOString()
+      "createdAt" : chatBody.createdAt ? chatBody.createdAt : new Date().toISOString()
     })
     return await Chat.update( { user_id : chatBody.user_id} , { $set : { response : response } })
 
@@ -30,9 +30,10 @@ const createChat = async (chatBody) => {
         {
           "bot" : await ChatSchemaService.getChat(chatBody.bot),
           "user_response" : chatBody.user_response,
-          "createdAt" : new Date().toISOString()
+          "createdAt" : chatBody.createdAt ? chatBody.createdAt : new Date().toISOString()
         }
-      ]
+      ],
+      "createdAt" : chatBody.createdAt ? chatBody.createdAt : new Date().toISOString()
     }
     return await Chat.create({...chatObj})
 
