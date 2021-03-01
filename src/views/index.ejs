@@ -89,8 +89,7 @@
         <% for(var i=0; i < lists.results.length; i++) { %>
             <tr>
                 <td><%= lists.results[i].user_id %></td>
-                <td><%= date =  new Date(lists.results[i].createdAt).getFullYear() +"-" + (parseInt(new Date(lists.results[i].createdAt).getMonth()) +1)  +"-" +  new Date(lists.results[i].createdAt).getDate() %>
-                    <%= date =  new Date(lists.results[i].createdAt).getHours() +"-" + new Date(lists.results[i].createdAt).getMinutes()  +"-" +  new Date(lists.results[i].createdAt).getSeconds() %>
+                <td><%= date =  lists.results[i].createdAt %>
                 </td>
                 <td>
                     <ul class="border" style="border-radius: 11px">
@@ -118,6 +117,7 @@
 </body>
 
 <script>
+
 
 function reloadPage(pageNo){
     window.location.href = window.location.origin + window.location.pathname + "?page=" + pageNo;
