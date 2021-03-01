@@ -6,7 +6,8 @@ const createChat = {
     bot: Joi.string().required(),
     user_response: Joi.object().required(),
     user_id: Joi.string().required(),
-    client_id : Joi.string().required()
+    client_id : Joi.string().required(),
+    createChat : Joi.date()
   }),
 };
 
