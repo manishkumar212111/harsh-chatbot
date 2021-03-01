@@ -20,7 +20,7 @@ const createChat = async (chatBody) => {
       "user_response" : chatBody.user_response,
       "createdAt" : chatBody.createdAt ? chatBody.createdAt : new Date().toISOString()
     })
-    return await Chat.update( { user_id : chatBody.user_id} , { $set : { response : response } })
+    return await Chat.update( { user_id : chatBody.user_id} , { $set : { response : response , updatedAt : chatBody.createdAt ? chatBody.createdAt : new Date().toISOString() } })
 
   } else {
     let chatObj = {
