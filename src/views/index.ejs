@@ -76,7 +76,9 @@
     
   <h2>Client Id : <%=client_id %></h2>
   <div>
-    <input type="date" id="start_date" placeholder="starting date"><input id="end_date" type="date" placeholder="Ending date"><input type="button">filter</button>  
+    From : <input type="date" id="start_date" style="margin : 5px;" placeholder="starting date"> To : <input style="margin : 5px;" id="end_date" type="date" placeholder="Ending date">  
+    Limit : <select id="limit" onselect="limitvalueSelected()"><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select>
+    <input type="button" onclick="handleFilterClick()" style="margin : 5px;" class="btn btn-secondary" value="filter"></button>
     <input class="btn btn-secondary"
         style="margin : 5px; float: right;"    
         type="button" 
@@ -125,6 +127,23 @@
 </body>
 
 <script>
+if(window.location.search){
+    let searchString = window.location.search.replace('?' , '');
+    searchString.split('&').forEach((elem) => {
+        if(document.getElementById(elem.split('=')[0])){
+            document.getElementById(elem.split('=')[0]).value = elem.split('=')[1];
+        }
+    })
+}
+
+
+function handleFilterClick() {
+    if(document.getElementById('start_date').value && document.getElementById('end_date').value){
+        window.location.href = window.location.origin + window.location.pathname + "?page=1&end_date="+ document.getElementById('end_date').value + "&start_date=" + document.getElementById('start_date').value + "&limit="+ document.getElementById('limit').value;
+    } else {
+        alert("Starting and ending date is required")
+    }
+}
 function tableToExcel(table, name, filename) {
         let uri = 'data:application/vnd.ms-excel;base64,', 
         template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><title></title><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>', 
@@ -140,7 +159,14 @@ function tableToExcel(table, name, filename) {
 }
 
 function reloadPage(pageNo){
-    window.location.href = window.location.origin + window.location.pathname + "?page=" + pageNo;
+    let newSearchString= "?page="+pageNo
+    let searchString = window.location.search.replace('?' , '');
+    searchString.split('&').forEach((elem) => {
+        if(elem.split('=')[0] != 'page'){
+            newSearchString += '&'+ elem
+        }
+    })
+    window.location.href = window.location.origin + window.location.pathname + newSearchString;
 }
 
 var Pagination = {

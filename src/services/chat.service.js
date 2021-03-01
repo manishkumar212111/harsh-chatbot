@@ -58,11 +58,23 @@ const getChatByClient = async (client_id , filters) => {
     let filter = {
       client_id : client_id
     };
+    function addDays(date, days) {
+      var result = new Date(date);
+      result.setDate(date.getDate() + days);
+      return result;
+  }
+    if(filters.start_date && filters.end_date){
+      filter['updatedAt']= {
+        $gte: new Date(filters.start_date),
+        $lt: addDays(new Date(filters.end_date) , 1)
+      }
+    }
 
     let paginationOptions = {
       page : filters.page ? filters.page : 1,
       limit : filters.limit ? filters.limit : 10
     }
+
     return await Chat.paginate(filter, paginationOptions , async (option) => {
       return await Chat.find(option.filter).
       sort({createdAt : -1}).skip(option.skip).limit(option.limit).exec()
